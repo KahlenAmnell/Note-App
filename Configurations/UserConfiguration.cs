@@ -11,13 +11,13 @@ namespace Note_App_API.Configurations
             builder.HasMany(u => u.Notes)
                 .WithOne(n => n.Author)
                 .HasForeignKey(n => n.AuthorID);
-            builder.HasOne(u => u.Dashboard)
-                .WithOne(d => d.User)
-                .HasForeignKey<Dashboard>(d => d.UserId);
+
             builder.Property(u => u.Email)
                 .IsRequired();
+
             builder.Property(u => u.Name)
-                .IsRequired();
+                .IsRequired()
+                .HasMaxLength(50);
         }
     }
 }

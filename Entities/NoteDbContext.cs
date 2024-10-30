@@ -6,8 +6,7 @@ namespace Note_App_API.Entities
     {
         public NoteDbContext(DbContextOptions<NoteDbContext> options) : base(options) { }
         public DbSet<Note> Notes { get; set; }
-        public DbSet<Dashboard> Users { get; set; }
-        public DbSet<Dashboard> Dashboards { get; set; }
+        public DbSet<User> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
