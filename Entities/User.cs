@@ -1,6 +1,6 @@
 ﻿namespace Note_App_API.Entities
 {
-    public class User
+    public class Dashboard
     {
         public int Id { get; set; }
         public string Name { get; set; }

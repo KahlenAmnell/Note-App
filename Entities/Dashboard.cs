@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public User UserName { get; set; }
+        public Dashboard UserName { get; set; }
         public List<Note> Notes { get; set; } = new List<Note>();
     }
 }
