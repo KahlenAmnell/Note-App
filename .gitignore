@@ -26,6 +26,10 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
+# Roslyn cache directories
+*.ide/
+.vs/
+
 # Benchmark Results
 BenchmarkDotNet.Artifacts/
 

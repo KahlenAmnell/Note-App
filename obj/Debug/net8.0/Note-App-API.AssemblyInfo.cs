@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Note-App-API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+49e3c7f2adea6b9fc09b88099437e768ead3199c")]
 [assembly: System.Reflection.AssemblyProductAttribute("Note-App-API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Note-App-API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
