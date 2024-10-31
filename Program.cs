@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Note_App_API.Entities;
+using System.Reflection;
+using Note_App_API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,10 @@ builder.Services.AddDbContext<NoteDbContext>(
     option => option
         .UseSqlServer(builder.Configuration.GetConnectionString("NoteAppConnectionString"))
     );
+builder.Services.AddScoped<INoteService, NoteService>();
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+
 
 var app = builder.Build();
 
