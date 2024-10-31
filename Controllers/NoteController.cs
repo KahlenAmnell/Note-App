@@ -8,12 +8,10 @@ namespace Note_App_API.Controllers;
 [Route("api/note")]
 public class NoteController : ControllerBase
 {
-    private readonly NoteDbContext _dbContext;
     private readonly INoteService _service;
 
-    public NoteController(NoteDbContext dbContext, INoteService service)
+    public NoteController(INoteService service)
     {
-        _dbContext = dbContext;
         _service = service;
     }
     [HttpGet("{userId}")]
@@ -27,7 +25,7 @@ public class NoteController : ControllerBase
     [HttpPost("{userId}")]
     public async Task<ActionResult> CreateNote([FromRoute] int userId, [FromBody] CreateNoteDto newNote)
     {
-        var noteId = _service.CreateNewNote(userId, newNote);
+        var noteId = await _service.CreateNewNote(userId, newNote);
 
         return Created($"{noteId}", null);
     }

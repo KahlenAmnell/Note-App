@@ -15,11 +15,13 @@ namespace Note_App_API.Services
     {
         private readonly NoteDbContext _dbContext;
         private readonly IMapper _mapper;
+        private readonly ILogger<NoteService> _logger;
 
-        public NoteService(NoteDbContext dbContext, IMapper mapper)
+        public NoteService(NoteDbContext dbContext, IMapper mapper, ILogger<NoteService> logger)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<NoteDto>> GetAllUserNotesAsync(int userId)
