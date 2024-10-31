@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Note_App_API.Entities;
+using Note_App_API.Models;
 using Note_App_API.Services;
 
 namespace Note_App_API.Controllers;
@@ -21,5 +22,13 @@ public class NoteController : ControllerBase
         var notes = await _service.GetAllUserNotesAsync(userId);
 
         return Ok(notes);
+    }
+
+    [HttpPost("{userId}")]
+    public async Task<ActionResult> CreateNote([FromRoute] int userId, [FromBody] CreateNoteDto newNote)
+    {
+        var noteId = _service.CreateNewNote(userId, newNote);
+
+        return Created($"{noteId}", null);
     }
 }
