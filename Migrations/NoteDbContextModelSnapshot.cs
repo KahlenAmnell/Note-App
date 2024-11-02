@@ -46,7 +46,7 @@ namespace Note_App_API.Migrations
 
                     b.HasIndex("AuthorID");
 
-                    b.ToTable("Notes");
+                    b.ToTable("Notes", (string)null);
                 });
 
             modelBuilder.Entity("Note_App_API.Entities.User", b =>
@@ -72,7 +72,7 @@ namespace Note_App_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Note_App_API.Entities.Note", b =>
