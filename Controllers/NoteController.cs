@@ -36,4 +36,11 @@ public class NoteController : ControllerBase
         await _service.Delete(noteId);
         return NoContent();
     }
+
+    [HttpPut("update/{noteId}")]
+    public async Task<ActionResult> UpdateNote([FromRoute] int noteId, [FromBody] CreateNoteDto dto)
+    {
+        await _service.Update(noteId, dto);
+        return Ok();
+    }
 }

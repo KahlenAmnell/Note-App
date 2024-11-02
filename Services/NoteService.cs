@@ -11,6 +11,7 @@ namespace Note_App_API.Services
         Task<IEnumerable<NoteDto>> GetAllUserNotesAsync(int userId);
         Task<int> CreateNewNote(int userId, CreateNoteDto dto);
         Task Delete(int noteId);
+        Task Update(int noteId, CreateNoteDto dto);
     }
 
     public class NoteService : INoteService
@@ -60,6 +61,20 @@ namespace Note_App_API.Services
             _dbContext.Notes.Remove(note);
 
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task Update(int noteId, CreateNoteDto dto)
+        {
+            var note = _dbContext
+                .Notes
+                .FirstOrDefault(n => n.Id == noteId);
+
+            if (note == null) throw new NotFoundException("Note not found");
+
+            note.Title = dto.Title;
+            note.Content = dto.Content;
+            _dbContext.SaveChangesAsync();
+
         }
     }
 }
