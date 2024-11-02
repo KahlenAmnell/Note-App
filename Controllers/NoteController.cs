@@ -29,4 +29,11 @@ public class NoteController : ControllerBase
 
         return Created($"{noteId}", null);
     }
+
+    [HttpDelete("deleteNote/{noteId}")]
+    public async Task<ActionResult> DeleteNote([FromRoute] int noteId)
+    {
+        await _service.Delete(noteId);
+        return NoContent();
+    }
 }

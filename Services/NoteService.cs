@@ -9,6 +9,7 @@ namespace Note_App_API.Services
     {
         Task<IEnumerable<NoteDto>> GetAllUserNotesAsync(int userId);
         Task<int> CreateNewNote(int userId, CreateNoteDto dto);
+        Task Delete(int noteId);
     }
 
     public class NoteService : INoteService
@@ -31,7 +32,6 @@ namespace Note_App_API.Services
                 .Where(n => n.AuthorID == userId)
                 .ToListAsync();
 
-
             var notesDtos = _mapper.Map<List<NoteDto>>(notes);
 
             return notesDtos;
@@ -45,6 +45,20 @@ namespace Note_App_API.Services
             _dbContext.SaveChanges();
 
             return note.Id;
+        }
+
+        public async Task Delete(int noteId)
+        {
+            _logger.LogError($"Note with id: {noteId} DELETE action invoked");
+            var note = _dbContext
+                .Notes
+                .FirstOrDefault(n => n.Id == noteId);
+
+            if (note == null) return;
+
+            _dbContext.Notes.Remove(note);
+
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
