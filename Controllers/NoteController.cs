@@ -15,7 +15,7 @@ public class NoteController : ControllerBase
         _service = service;
     }
     [HttpGet("{userId}")]
-    public async Task<ActionResult<IEnumerable<Note>>> GetUserNotes([FromRoute] int userId)
+    public async Task<ActionResult<IEnumerable<NoteDto>>> GetUserNotes([FromRoute] int userId)
     {
         var notes = await _service.GetAllUserNotesAsync(userId);
 
