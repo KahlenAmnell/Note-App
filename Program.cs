@@ -18,6 +18,7 @@ builder.Services.AddDbContext<NoteDbContext>(
 builder.Services.AddScoped<INoteService, NoteService>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
+builder.Services.AddSwaggerGen();
 
 builder.Logging.ClearProviders();
 builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
@@ -33,6 +34,12 @@ if (!app.Environment.IsDevelopment())
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseHttpsRedirection();
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Note App API");
+});
 
 app.UseAuthorization();
 
