@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Note_App_API.Entities;
+using Note_App_API.Exceptions;
 using Note_App_API.Models;
 
 namespace Note_App_API.Services
@@ -54,7 +55,7 @@ namespace Note_App_API.Services
                 .Notes
                 .FirstOrDefault(n => n.Id == noteId);
 
-            if (note == null) return;
+            if (note == null) throw new NotFoundException("Note not found");
 
             _dbContext.Notes.Remove(note);
 
