@@ -12,7 +12,8 @@ using FluentValidation.AspNetCore;
 using Microsoft.IdentityModel.Tokens;
 using Note_App_API;
 using System.Text;
-using static Note_App_API.Services.IUserContextService;
+using Microsoft.AspNetCore.Authorization;
+using Note_App_API.Authorization;
 
 internal class Program
 {
@@ -41,6 +42,9 @@ internal class Program
             };
         });
 
+        builder.Services.AddAuthorization();
+        builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
+
         // Add services to the container.
 
         builder.Services.AddControllers();
@@ -60,7 +64,6 @@ internal class Program
         builder.Services.AddSingleton(authenticationSettings);
         builder.Services.AddScoped<IUserContextService, UserContextService>();
         builder.Services.AddHttpContextAccessor();
-
 
         builder.Logging.ClearProviders();
         builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);

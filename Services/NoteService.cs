@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Note_App_API.Authorization;
 using Note_App_API.Entities;
 using Note_App_API.Exceptions;
 using Note_App_API.Models;
@@ -19,12 +21,17 @@ namespace Note_App_API.Services
         private readonly NoteDbContext _dbContext;
         private readonly IMapper _mapper;
         private readonly ILogger<NoteService> _logger;
+        private readonly IAuthorizationService _authorizationService;
+        private IUserContextService _userContextService;
 
-        public NoteService(NoteDbContext dbContext, IMapper mapper, ILogger<NoteService> logger)
+        public NoteService(NoteDbContext dbContext, IMapper mapper, ILogger<NoteService> logger, 
+            IAuthorizationService authorizationService, IUserContextService userContextService)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _logger = logger;
+            _authorizationService = authorizationService;
+            _userContextService = userContextService;
         }
 
         public async Task<IEnumerable<NoteDto>> GetAllUserNotesAsync(int userId)
@@ -57,6 +64,9 @@ namespace Note_App_API.Services
                 .FirstOrDefault(n => n.Id == noteId);
 
             if (note == null) throw new NotFoundException("Note not found");
+
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, note,
+                new ResourceOperationRequirement(ResourceOperation.Delete)).Result;
 
             _dbContext.Notes.Remove(note);
 
