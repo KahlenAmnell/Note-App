@@ -17,9 +17,9 @@ public class AccountController: ControllerBase
     [HttpPost("register")]
     public async Task<ActionResult> RegisterUser([FromBody] CreateAccountDto dto)
     {
-        var userId = _service.registerAccount(dto);
+        var newUserName = await _service.registerAccount(dto);
 
-        return Created($"{userId}", null);
+        return Created($"User {newUserName} account created", null);
     }
 
 }

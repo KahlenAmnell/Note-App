@@ -6,7 +6,7 @@ namespace Note_App_API.Services
 {
     public interface IAccountService
     {
-        Task registerAccount(CreateAccountDto dto);
+        Task<string> registerAccount(CreateAccountDto dto);
     }
     public class AccountService : IAccountService
     {
@@ -19,7 +19,7 @@ namespace Note_App_API.Services
             _passwordHasher = passwordHasher;
         }
 
-        public async Task registerAccount(CreateAccountDto dto)
+        public async Task<string> registerAccount(CreateAccountDto dto)
         {
             var newUser = new User
             {
@@ -30,6 +30,7 @@ namespace Note_App_API.Services
 
             await _dbContext.AddAsync(newUser);
             await _dbContext.SaveChangesAsync();
+            return newUser.Name;
         }
     }
 }
