@@ -22,4 +22,11 @@ public class AccountController: ControllerBase
         return Created($"User {newUserName} account created", null);
     }
 
+    [HttpPost("login")]
+    public ActionResult Login([FromBody] LoginDto dto)
+    {
+        var token = _service.GenerateJwt(dto);
+        return Ok(token);
+    }
+
 }

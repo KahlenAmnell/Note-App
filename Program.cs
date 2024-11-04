@@ -56,6 +56,7 @@ internal class Program
         builder.Services.AddScoped<IAccountService, AccountService>();
         builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         builder.Services.AddScoped<IValidator<CreateAccountDto>, CreateAccountDtoValidator>();
+        builder.Services.AddSingleton(authenticationSettings);
 
         builder.Logging.ClearProviders();
         builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
