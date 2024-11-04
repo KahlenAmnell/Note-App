@@ -68,6 +68,8 @@ namespace Note_App_API.Services
             var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, note,
                 new ResourceOperationRequirement(ResourceOperation.Delete)).Result;
 
+            if (!authorizationResult.Succeeded) { return; }
+
             _dbContext.Notes.Remove(note);
 
             await _dbContext.SaveChangesAsync();
@@ -80,6 +82,11 @@ namespace Note_App_API.Services
                 .FirstOrDefault(n => n.Id == noteId);
 
             if (note == null) throw new NotFoundException("Note not found");
+
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, note,
+                new ResourceOperationRequirement(ResourceOperation.Update)).Result;
+
+            if (!authorizationResult.Succeeded) { return; }
 
             note.Title = dto.Title;
             note.Content = dto.Content;
