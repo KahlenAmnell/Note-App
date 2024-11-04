@@ -9,13 +9,37 @@ using FluentValidation;
 using Note_App_API.Models;
 using Note_App_API.Models.Validators;
 using FluentValidation.AspNetCore;
+using Microsoft.IdentityModel.Tokens;
+using Note_App_API;
+using System.Text;
 
 internal class Program
 {
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        
+
+
+        var authenticationSettings = new AuthenticationSettings();
+        builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
+
+        builder.Services.AddAuthentication(option => 
+        {
+            option.DefaultAuthenticateScheme = "Bearer";
+            option.DefaultScheme = "Bearer";
+            option.DefaultChallengeScheme = "Bearer";
+        }).AddJwtBearer(cfg => 
+        {
+            cfg.RequireHttpsMetadata = false;
+            cfg.SaveToken = true; 
+            cfg.TokenValidationParameters = new TokenValidationParameters 
+            {
+                ValidIssuer = authenticationSettings.JwtIssuer,
+                ValidAudience = authenticationSettings.JwtIssuer,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey)),
+            };
+        });
+
         // Add services to the container.
 
         builder.Services.AddControllers();
@@ -46,6 +70,9 @@ internal class Program
         }
 
         app.UseMiddleware<ErrorHandlingMiddleware>();
+
+        app.UseAuthorization();
+
         app.UseHttpsRedirection();
 
         app.UseSwagger();
