@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Note_App_API.Entities;
+using Note_App_API.Exceptions;
 using Note_App_API.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -44,11 +45,10 @@ namespace Note_App_API.Services
         {
             var user = _dbContext.Users
                 .FirstOrDefault(u => u.Email == dto.Email);
-            if (user is null) return null;
+            if (user is null) throw new BadRequestException("Invalid username or password");
 
             var result = _passwordHasher.VerifyHashedPassword(user, user.Password, dto.Password);
-            if (result == PasswordVerificationResult.Failed)
-                return null;
+            if (result == PasswordVerificationResult.Failed) throw new BadRequestException("Invalid username or password");
 
             var claims = new List<Claim>()
             {
