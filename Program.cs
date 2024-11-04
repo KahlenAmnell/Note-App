@@ -4,6 +4,7 @@ using System.Reflection;
 using Note_App_API.Services;
 using NLog.Web;
 using Note_App_API.Middleware;
+using Microsoft.AspNetCore.Identity;
 
 internal class Program
 {
@@ -24,7 +25,8 @@ internal class Program
         builder.Services.AddScoped<ErrorHandlingMiddleware>();
         builder.Services.AddSwaggerGen();
         builder.Services.AddScoped<IAccountService, AccountService>();
-        
+        builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
         builder.Logging.ClearProviders();
         builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
         builder.Host.UseNLog();
