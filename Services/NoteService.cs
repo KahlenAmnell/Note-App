@@ -43,8 +43,8 @@ namespace Note_App_API.Services
         {
             var note = _mapper.Map<Note>(dto);
             note.AuthorID = userId;
-            _dbContext.Notes.Add(note);
-            _dbContext.SaveChanges();
+            await _dbContext.Notes.AddAsync(note);
+            await _dbContext.SaveChangesAsync();
 
             return note.Id;
         }
@@ -73,7 +73,7 @@ namespace Note_App_API.Services
 
             note.Title = dto.Title;
             note.Content = dto.Content;
-            _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
         }
     }

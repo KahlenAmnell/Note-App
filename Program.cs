@@ -5,6 +5,10 @@ using Note_App_API.Services;
 using NLog.Web;
 using Note_App_API.Middleware;
 using Microsoft.AspNetCore.Identity;
+using FluentValidation;
+using Note_App_API.Models;
+using Note_App_API.Models.Validators;
+using FluentValidation.AspNetCore;
 
 internal class Program
 {
@@ -16,6 +20,7 @@ internal class Program
 
         builder.Services.AddControllers();
 
+        builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly).AddFluentValidationAutoValidation();
         builder.Services.AddDbContext<NoteDbContext>(
             option => option
                 .UseSqlServer(builder.Configuration.GetConnectionString("NoteAppConnectionString"))
@@ -26,6 +31,7 @@ internal class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddScoped<IAccountService, AccountService>();
         builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+        builder.Services.AddScoped<IValidator<CreateAccountDto>, CreateAccountDtoValidator>();
 
         builder.Logging.ClearProviders();
         builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
