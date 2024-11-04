@@ -16,6 +16,11 @@ public class ErrorHandlingMiddleware : IMiddleware
         {
             await next.Invoke(context);
         }
+        catch (ForbidAccessException forbidAccessException)
+        {
+            context.Response.StatusCode = 401;
+            await context.Response.WriteAsync(forbidAccessException.Message);
+        }
         catch(BadRequestException badRequestException)
         {
             context.Response.StatusCode = 400;
