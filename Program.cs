@@ -12,6 +12,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.IdentityModel.Tokens;
 using Note_App_API;
 using System.Text;
+using static Note_App_API.Services.IUserContextService;
 
 internal class Program
 {
@@ -57,6 +58,9 @@ internal class Program
         builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         builder.Services.AddScoped<IValidator<CreateAccountDto>, CreateAccountDtoValidator>();
         builder.Services.AddSingleton(authenticationSettings);
+        builder.Services.AddScoped<IUserContextService, UserContextService>();
+        builder.Services.AddHttpContextAccessor();
+
 
         builder.Logging.ClearProviders();
         builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
