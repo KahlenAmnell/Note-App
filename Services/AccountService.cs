@@ -35,7 +35,7 @@ namespace Note_App_API.Services
                 Email = dto.Email,
                 Name = dto.Name
             };
-            newUser.Password = _passwordHasher.HashPassword(newUser, dto.Password);
+            newUser.HashPassword = _passwordHasher.HashPassword(newUser, dto.Password);
 
             await _dbContext.AddAsync(newUser);
             await _dbContext.SaveChangesAsync();
@@ -47,7 +47,7 @@ namespace Note_App_API.Services
                 .FirstOrDefault(u => u.Email == dto.Email);
             if (user is null) throw new BadRequestException("Invalid username or password");
 
-            var result = _passwordHasher.VerifyHashedPassword(user, user.Password, dto.Password);
+            var result = _passwordHasher.VerifyHashedPassword(user, user.HashPassword, dto.Password);
             if (result == PasswordVerificationResult.Failed) throw new BadRequestException("Invalid username or password");
 
             var claims = new List<Claim>()

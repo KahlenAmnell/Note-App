@@ -68,7 +68,7 @@ namespace Note_App_API.Services
             var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, note,
                 new ResourceOperationRequirement(ResourceOperation.Delete)).Result;
 
-            if (!authorizationResult.Succeeded) { throw new ForbidAccessException("Log in to get access to this function"); }
+            if (!authorizationResult.Succeeded) { throw new ForbidAccessException("You do not have permission to perform this action"); }
 
             _dbContext.Notes.Remove(note);
 
@@ -86,7 +86,7 @@ namespace Note_App_API.Services
             var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, note,
                 new ResourceOperationRequirement(ResourceOperation.Update)).Result;
 
-            if (!authorizationResult.Succeeded) { throw new ForbidAccessException("Log in to get access to this function"); }
+            if (!authorizationResult.Succeeded) { throw new ForbidAccessException("You do not have permission to perform this action"); }
 
             note.Title = dto.Title;
             note.Content = dto.Content;
