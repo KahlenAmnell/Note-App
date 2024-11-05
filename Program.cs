@@ -45,8 +45,6 @@ internal class Program
         builder.Services.AddAuthorization();
         builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
 
-        // Add services to the container.
-
         builder.Services.AddControllers();
 
         builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly).AddFluentValidationAutoValidation();
