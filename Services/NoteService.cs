@@ -65,10 +65,10 @@ namespace Note_App_API.Services
 
             if (note == null) throw new NotFoundException("Note not found");
 
-            //var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, note,
-            //    new ResourceOperationRequirement(ResourceOperation.Delete)).Result;
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, note,
+                new ResourceOperationRequirement(ResourceOperation.Delete)).Result;
 
-            //if (!authorizationResult.Succeeded) { throw new ForbidAccessException("Log in to get access to this function"); }
+            if (!authorizationResult.Succeeded) { throw new ForbidAccessException("Log in to get access to this function"); }
 
             _dbContext.Notes.Remove(note);
 
