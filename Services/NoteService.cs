@@ -10,8 +10,8 @@ namespace Note_App_API.Services
 {
     public interface INoteService
     {
-        Task<IEnumerable<NoteDto>> GetAllUserNotesAsync(int userId);
-        Task<int> CreateNewNote(int userId, CreateNoteDto dto);
+        Task<IEnumerable<NoteDto>> GetAllUserNotesAsync();
+        Task<int> CreateNewNote(CreateNoteDto dto);
         Task Delete(int noteId);
         Task Update(int noteId, CreateNoteDto dto);
     }
@@ -34,8 +34,9 @@ namespace Note_App_API.Services
             _userContextService = userContextService;
         }
 
-        public async Task<IEnumerable<NoteDto>> GetAllUserNotesAsync(int userId)
+        public async Task<IEnumerable<NoteDto>> GetAllUserNotesAsync()
         {
+            var userId = _userContextService.GetUserId;
             var notes = await _dbContext
                 .Notes
                 .Where(n => n.AuthorID == userId)
@@ -46,10 +47,10 @@ namespace Note_App_API.Services
             return notesDtos;
         }
 
-        public async Task<int> CreateNewNote(int userId, CreateNoteDto dto)
+        public async Task<int> CreateNewNote(CreateNoteDto dto)
         {
             var note = _mapper.Map<Note>(dto);
-            note.AuthorID = userId;
+            note.AuthorID = (int)_userContextService.GetUserId;
             await _dbContext.Notes.AddAsync(note);
             await _dbContext.SaveChangesAsync();
 

@@ -18,8 +18,6 @@ namespace Note_App_API.Services
 
         public ClaimsPrincipal User => _httpContextAnccessor.HttpContext?.User;
         public int? GetUserId =>
-            User is null ?
-            null :
-            (int?)int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
     }
 }
