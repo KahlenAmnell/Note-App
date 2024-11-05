@@ -28,6 +28,8 @@ namespace Note_App_API.Services
             _authenticationSettings = authenticationSettings;
         }
 
+        // Http Post
+        // Adds new user to database
         public async Task<string> registerAccount(CreateAccountDto dto)
         {
             var newUser = new User
@@ -41,6 +43,9 @@ namespace Note_App_API.Services
             await _dbContext.SaveChangesAsync();
             return newUser.Name;
         }
+
+        // Http Post
+        // Generate a user token if the user provided correct data
         public string GenerateJwt(LoginDto dto)
         {
             var user = _dbContext.Users

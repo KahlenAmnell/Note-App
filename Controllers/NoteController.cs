@@ -33,17 +33,17 @@ public class NoteController : ControllerBase
         return Created($"{noteId}", null);
     }
 
-    [HttpDelete("deleteNote/{noteId}")]
+    [HttpDelete("{noteId}")]
     public async Task<ActionResult> DeleteNote([FromRoute] int noteId)
     {
-        await _service.Delete(noteId);
+        await _service.DeleteNote(noteId);
         return NoContent();
     }
 
-    [HttpPut("update/{noteId}")]
+    [HttpPut("{noteId}")]
     public async Task<ActionResult> UpdateNote([FromRoute] int noteId, [FromBody] CreateNoteDto dto)
     {
-        await _service.Update(noteId, dto);
+        await _service.UpdateNote(noteId, dto);
         return Ok();
     }
 }

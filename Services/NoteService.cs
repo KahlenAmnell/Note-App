@@ -12,8 +12,8 @@ namespace Note_App_API.Services
     {
         Task<IEnumerable<NoteDto>> GetAllUserNotesAsync();
         Task<int> CreateNewNote(CreateNoteDto dto);
-        Task Delete(int noteId);
-        Task Update(int noteId, CreateNoteDto dto);
+        Task DeleteNote(int noteId);
+        Task UpdateNote(int noteId, CreateNoteDto dto);
     }
 
     public class NoteService : INoteService
@@ -33,7 +33,8 @@ namespace Note_App_API.Services
             _authorizationService = authorizationService;
             _userContextService = userContextService;
         }
-
+        // HTTP Get
+        // Return all notes of the logged in user
         public async Task<IEnumerable<NoteDto>> GetAllUserNotesAsync()
         {
             var userId = _userContextService.GetUserId;
@@ -47,6 +48,8 @@ namespace Note_App_API.Services
             return notesDtos;
         }
 
+        // HTTP Post
+        // Create new note of the logged in user
         public async Task<int> CreateNewNote(CreateNoteDto dto)
         {
             var note = _mapper.Map<Note>(dto);
@@ -57,7 +60,9 @@ namespace Note_App_API.Services
             return note.Id;
         }
 
-        public async Task Delete(int noteId)
+        // HTTP Delete
+        // Delete note with id from route if it belongs to logged in user
+        public async Task DeleteNote(int noteId)
         {
             _logger.LogError($"Note with id: {noteId} DELETE action invoked");
             var note = _dbContext
@@ -76,7 +81,9 @@ namespace Note_App_API.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task Update(int noteId, CreateNoteDto dto)
+        // HTTP Put
+        // Update note with id from route if it belongs to logged in user
+        public async Task UpdateNote(int noteId, CreateNoteDto dto)
         {
             var note = _dbContext
                 .Notes
