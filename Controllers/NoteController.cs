@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Note_App_API.Entities;
 using Note_App_API.Models;
 using Note_App_API.Services;
+using System.Security.Claims;
 
 namespace Note_App_API.Controllers;
 [ApiController]
@@ -16,33 +17,33 @@ public class NoteController : ControllerBase
     {
         _service = service;
     }
-    [HttpGet("{userId}")]
-    public async Task<ActionResult<IEnumerable<NoteDto>>> GetUserNotes([FromRoute] int userId)
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<NoteDto>>> GetUserNotes()
     {
-        var notes = await _service.GetAllUserNotesAsync(userId);
+        var notes = await _service.GetAllUserNotesAsync();
 
         return Ok(notes);
     }
 
-    [HttpPost("{userId}")]
-    public async Task<ActionResult> CreateNote([FromRoute] int userId, [FromBody] CreateNoteDto newNote)
+    [HttpPost]
+    public async Task<ActionResult> CreateNote([FromBody] CreateNoteDto newNote)
     {
-        var noteId = await _service.CreateNewNote(userId, newNote);
+        var noteId = await _service.CreateNewNote(newNote);
 
         return Created($"{noteId}", null);
     }
 
-    [HttpDelete("deleteNote/{noteId}")]
+    [HttpDelete("{noteId}")]
     public async Task<ActionResult> DeleteNote([FromRoute] int noteId)
     {
-        await _service.Delete(noteId);
+        await _service.DeleteNote(noteId);
         return NoContent();
     }
 
-    [HttpPut("update/{noteId}")]
+    [HttpPut("{noteId}")]
     public async Task<ActionResult> UpdateNote([FromRoute] int noteId, [FromBody] CreateNoteDto dto)
     {
-        await _service.Update(noteId, dto);
+        await _service.UpdateNote(noteId, dto);
         return Ok();
     }
 }
