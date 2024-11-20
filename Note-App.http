@@ -1,6 +1,0 @@
-@Note_App_HostAddress = http://localhost:5204
-
-GET {{Note_App_HostAddress}}/swagger/
-Accept: application/json
-
-###
